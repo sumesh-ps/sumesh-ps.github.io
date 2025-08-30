@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sumesh Palaparambil Subbayyan | Analytics & BI Leader</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@700&family=Lato:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        :root {
+            /* Subtle palette */
+            --primary: #1f2a44;
+            /* muted navy */
+            --accent: #d89b57;
+            /* soft amber */
+            --text: #1f2430;
+            /* near-black */
+            --muted: #6b7280;
+            /* slate */
+            --bg: #f7f9fc;
+            /* soft paper */
+            --panel: #f7f9fc;
+            /* panel gray */
+
+            --max-width: 1000px;
+            --radius: 12px;
+            --shadow-1: 0 6px 18px rgba(20, 30, 60, 0.08);
+            --shadow-2: 0 10px 30px rgba(20, 30, 60, 0.12);
+            --header-h: 76px;
+            /* sticky header height */
+            --space-1: 8px;
+            --space-2: 12px;
+            --space-3: 16px;
+            --space-4: 24px;
+            --space-5: 32px;
+            --space-6: 48px;
+        }
+
+        /* Respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--header-h);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Lato', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            color: var(--text);
+            background: url('https://images.unsplash.com/photo-1465101178521-c1a41bc44d7d?fit=crop&w=1600&q=80') repeat center/cover;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .no-scroll {
+            overflow: hidden;
+        }
+
+        /* Accessible focus */
+        :focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+            border-radius: 6px;
+        }
+
+        /* Skip link */
+        .skip-link {
+            position: absolute;
+            left: -10000px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        .skip-link:focus {
+            left: 12px;
+            top: 12px;
+            width: auto;
+            height: auto;
+            background: #fff;
+            color: #000;
+            padding: 10px 14px;
+            border-radius: 6px;
+            box-shadow: var(--shadow-1);
+            z-index: 9999;
+        }
+
+        /* Sticky header (non-fullscreen hero) */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background:
+                linear-gradient(0deg, rgba(31, 42, 68, 0.86), rgba(31, 42, 68, 0.86)),
+                url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?fit=crop&w=1600&q=80') center/cover no-repeat;
+            color: #fff;
+            box-shadow: var(--shadow-1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            min-height: var(--header-h);
+        }
+
+        .brand {
+            display: grid;
+            gap: 4px;
+        }
+
+        .brand h1 {
+            font-family: 'Source Sans Pro', sans-serif;
+            margin: 0;
+            font-size: clamp(1.3rem, 3.6vw, 2.1rem);
+            line-height: 1.2;
+            letter-spacing: 0.2px;
+        }
+
+        .brand .subtitle {
+            font-weight: 700;
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
+            letter-spacing: 0.4px;
+            opacity: 0.95;
+        }
+
+        /* Desktop inline nav visible by default (desktop-first) */
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .desktop-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s, color 0.2s;
+            font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+        }
+
+        .desktop-nav a:hover,
+        .desktop-nav a:focus {
+            background: rgba(255, 255, 255, 0.16);
+            color: #fff;
+        }
+
+        /* Hamburger hidden on desktop by default */
+        .menu-toggle {
+            display: none;
+        }
+
+        /* Overlay: backdrop and panel (mobile only enabled) */
+        .nav-backdrop {
+            display: none;
+            position: fixed;
+            top: var(--header-h);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 900;
+        }
+
+        .nav-backdrop.show {
+            display: block;
+        }
+
+        .nav-panel {
+            display: none;
+            position: fixed;
+            top: var(--header-h);
+            left: 0;
+            right: 0;
+            background: rgba(31, 42, 68, 0.98);
+            border-radius: 0 0 14px 14px;
+            padding: 10px 0;
+            box-shadow: var(--shadow-2);
+            z-index: 950;
+            max-height: calc(100vh - var(--header-h));
+            overflow-y: auto;
+        }
+
+        .nav-panel.open {
+            display: block;
+        }
+
+        .nav-panel a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 14px 18px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 1.1rem;
+        }
+
+        .nav-panel a:last-child {
+            border-bottom: none;
+        }
+
+        .nav-panel a:hover,
+        .nav-panel a:focus {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        main {
+            max-width: var(--max-width);
+            margin: 30px auto;
+            padding: 0 var(--space-3);
+            display: grid;
+            gap: var(--space-6);
+        }
+
+        section {
+            background: var(--panel);
+            border-radius: var(--radius);
+            padding: 44px 28px;
+            box-shadow: var(--shadow-1);
+            backdrop-filter: blur(1px);
+        }
+
+        @media (min-width: 1024px) {
+            section {
+                min-height: calc(100vh - 200px);
+                display: grid;
+                align-content: center;
+            }
+        }
+
+        h2 {
+            border-left: 5px solid var(--accent);
+            padding-left: 12px;
+            margin: 0 0 var(--space-3) 0;
+            color: var(--primary);
+            font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+        }
+
+        p,
+        li {
+            font-size: clamp(1rem, 1.2vw, 1.12rem);
+        }
+
+        ul,
+        .skills-list {
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .skill-box {
+            background: var(--bg);
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-shadow: var(--shadow-1);
+            transition: transform 200ms ease, background 200ms ease, color 200ms ease;
+        }
+
+        .skill-box:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .collapsible {
+            background: var(--primary);
+            color: #fff;
+            cursor: pointer;
+            padding: 16px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: clamp(1rem, 1.2vw, 1.1rem);
+            margin-bottom: 8px;
+            border-radius: 10px;
+            transition: background 0.2s ease-in-out;
+        }
+
+        .collapsible:hover,
+        .collapsible.active {
+            background: var(--accent);
+            color: var(--text);
+        }
+
+        .content {
+            padding: 0 18px 12px 18px;
+            display: none;
+            overflow: hidden;
+            background: var(--bg);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-1);
+        }
+
+        .contact-block {
+            background: var(--bg);
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-2);
+        }
+
+        .contact-block h3 {
+            margin: 0 0 12px 0;
+            color: var(--primary);
+        }
+
+        .contact-details span {
+            display: block;
+            margin: 8px 0;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .contact-details a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .contact-details a:hover,
+        .contact-details a:focus {
+            color: #b97733;
+        }
+
+        #contactForm input,
+        #contactForm textarea {
+            width: 100%;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--panel);
+            font-size: 1rem;
+            background: #fff;
+            color: var(--text);
+        }
+
+        #contactForm button {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s ease-in-out;
+        }
+
+        #contactForm button:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        #formStatus {
+            margin-top: 10px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--muted);
+            padding: 30px 10px;
+            background: var(--bg);
+        }
+
+        /* MOBILE-ONLY: show hamburger, hide desktop nav, enable overlay */
+        @media (max-width: 900px) {
+            .menu-toggle {
+                display: inline-block;
+            }
+
+            /* show hamburger on mobile */
+            .desktop-nav {
+                display: none;
+            }
+
+            /* hide desktop inline nav on mobile */
+        }
+
+        /* DESKTOP-ONLY: hard-disable overlays (safety) */
+        @media (min-width: 901px) {
+            .nav-panel {
+                display: none !important;
+            }
+
+            .nav-backdrop {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <header class="site-header" role="banner">
+        <div class="brand">
+            <h1>Sumesh Palaparambil Subbayyan</h1>
+            <div class="subtitle">Analytics &amp; BI Leader</div>
+        </div>
+
+        <!-- Desktop inline nav (visible on ≥901px) -->
+        <nav class="desktop-nav" aria-label="Primary">
+            <a href="#about">About</a>
+            <a href="#expertise">Expertise</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <!-- Mobile toggle (shown only on ≤900px) -->
+        <button id="menuToggle" class="menu-toggle" aria-label="Open navigation" aria-controls="navPanel"
+            aria-expanded="false">☰</button>
+    </header>
+
+    <!-- Mobile overlay/backdrop below hero -->
+    <div id="navBackdrop" class="nav-backdrop" aria-hidden="true"></div>
+
+    <!-- Mobile overlay navigation -->
+    <nav id="navPanel" class="nav-panel" role="navigation" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <main id="main" tabindex="-1">
+        <section id="about">
+            <h2>About</h2>
+            <p>
+                With over 16 years in data analytics, business intelligence, and team leadership, I deliver scalable
+                insights that drive operational excellence.
+                Leading teams across logistics, HR, and call-centers, my focus: automating processes, boosting report
+                speed, and mentoring talent.
+            </p>
+        </section>
+
+        <section id="expertise">
+            <h2>Expertise</h2>
+            <ul>
+                <li><b>Logistics &amp; Resource Planning</b></li>
+                <li><b>Business Intelligence &amp; Analytics</b></li>
+                <li>Data Visualization &amp; Reporting</li>
+                <li>SQL &amp; Database Management</li>
+                <li>Automation &amp; Process Optimization</li>
+                <li>Machine Learning Integration</li>
+                <li>Data Governance &amp; Quality Assurance</li>
+                <li>Workforce Management &amp; Forecasting</li>
+                <li>HR Analytics &amp; Talent Management</li>
+                <li>SLA Management &amp; Global Reporting</li>
+            </ul>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <div class="skills-list">
+                <div class="skill-box">Power BI</div>
+                <div class="skill-box">Tableau</div>
+                <div class="skill-box">SQL &amp; Advanced Querying</div>
+                <div class="skill-box">Python</div>
+                <div class="skill-box">Jasper Studio</div>
+                <div class="skill-box">SAP Business Objects</div>
+                <div class="skill-box">Data Modeling</div>
+                <div class="skill-box">Automation</div>
+                <div class="skill-box">Machine Learning</div>
+                <div class="skill-box">Analytics Governance</div>
+                <div class="skill-box">Forecasting</div>
+                <div class="skill-box">HR Analytics</div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2>Experience</h2>
+
+            <button class="collapsible">DHL Supply Chain – Resource Planner</button>
+            <div class="content">
+                <em>May 2023–Present, Hatfield, UK</em>
+                <ul>
+                    <li>Automated inbound booking, saving 30+ hours/week and removing 1 FTE.</li>
+                    <li>Improved delivery punctuality by 15% via data-driven analysis.</li>
+                    <li>Reduced waste by 10% with utilization modeling.</li>
+                </ul>
+            </div>
+
+            <button class="collapsible">Zellis HR India – Manager Analytics &amp; BI</button>
+            <div class="content">
+                <em>July 2022–Jan 2023</em>
+                <ul>
+                    <li>Led 12+ professionals, improving analytics delivery speed by 30%.</li>
+                    <li>Developed Power BI dashboards and migrated 100+ reports, cutting generation times by 40%.</li>
+                    <li>Drove 95% SLA adherence and reduced forecasting errors by 15%.</li>
+                </ul>
+            </div>
+
+            <button class="collapsible">Alight Solutions (Strada) – Specialist/Project Manager</button>
+            <div class="content">
+                <em>July 2020–June 2022</em>
+                <ul>
+                    <li>Managed data teams, automated call center analytics — 25% faster service, +15% satisfaction.
+                    </li>
+                    <li>Built dashboards and models, improved adoption by 20% and reduced defects by 12%.</li>
+                </ul>
+            </div>
+
+            <button class="collapsible">Alight Solutions (Strada) – Associate Project Manager</button>
+            <div class="content">
+                <em>2009–2019</em>
+                <ul>
+                    <li>Standardized reporting, improved data interpretation accuracy by 20%.</li>
+                    <li>Boosted dashboard use and trained teams in scalable analytics (30% better outcomes).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <div class="contact-block">
+                <h3>Get in Touch</h3>
+                <div class="contact-details">
+                    <span><b>Email:</b> sumeshps@outlook.com</span>
+                    <span><b>Phone:</b> +44 7384 182454</span>
+                    <span><b>Location:</b> Hatfield, UK</span>
+                    <span><b>LinkedIn:</b> <a rel="noopener" href="https://www.linkedin.com/in/connctsumeshps"
+                            target="_blank">Profile</a></span>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2025 Sumesh Palaparambil Subbayyan. All rights reserved.
+    </footer>
+
+    <script>
+        // Mobile overlay menu with ARIA and icon swap
+        const menuToggle = document.getElementById('menuToggle');
+        const navPanel = document.getElementById('navPanel');
+        const navBackdrop = document.getElementById('navBackdrop');
+
+        function closeMenu() {
+            navPanel.classList.remove('open');
+            navBackdrop.classList.remove('show');
+            document.body.classList.remove('no-scroll');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.setAttribute('aria-label', 'Open navigation');
+            menuToggle.textContent = '☰';
+        }
+
+        function openMenu() {
+            navPanel.classList.add('open');
+            navBackdrop.classList.add('show');
+            document.body.classList.add('no-scroll');
+            menuToggle.setAttribute('aria-expanded', 'true');
+            menuToggle.setAttribute('aria-label', 'Close navigation');
+            menuToggle.textContent = '✕';
+        }
+
+        if (menuToggle && navPanel && navBackdrop) {
+            menuToggle.addEventListener('click', () => {
+                const isOpen = navPanel.classList.contains('open');
+                if (isOpen) closeMenu(); else openMenu();
+            });
+            navBackdrop.addEventListener('click', closeMenu);
+            navPanel.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+        }
+
+        // Collapsible experience panels
+        document.querySelectorAll('.collapsible').forEach(btn => {
+            btn.addEventListener('click', function () {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                content.style.display = content.style.display === "block" ? "none" : "block";
+            });
+        });
+
+        // Demo contact form
+        const form = document.getElementById('contactForm');
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                document.getElementById('formStatus').innerText = "Message sent! (Demo Form)";
+                this.reset();
+            });
+        }
+    </script>
+</body>
+
+</html>
